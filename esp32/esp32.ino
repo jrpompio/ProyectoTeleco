@@ -46,17 +46,24 @@ void disconnectBLE()
   pAuth = pSsid = pPass = nullptr; pClient = nullptr; bleConectado = false;
 }
 
+const int ledPin = 2;
+
 void setup()
 {
   Serial.begin(115200); while (!Serial);
   BLEDevice::init("");
   WiFi.mode(WIFI_STA);
+
+  pinMode(ledPin, OUTPUT);
+  digitalWrite(ledPin, LOW);
 }
 
 void loop()
 {
   switch (estadoActual) {
-
+    
+    digitalWrite(ledPin, LOW);
+    
     case INICIO:
       Serial.println("ESTADO: INICIO");
       estadoActual = INICIAR_WIFI_BLE;
@@ -158,7 +165,13 @@ void loop()
 
     case FIN:
       Serial.println("ESTADO: FIN");
-      while (true) delay(1000);
+      while (true)
+      {
+        digitalWrite(ledPin, HIGH);
+        delay(200);
+        digitalWrite(ledPin, LOW);
+        delay(1800); 
+      }
       break;
   }
 }
